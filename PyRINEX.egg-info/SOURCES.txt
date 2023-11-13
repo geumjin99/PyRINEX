@@ -1,0 +1,9 @@
+setup.py
+PyRINEX/DataManagement.py
+PyRINEX/QulityCheck.py
+PyRINEX/reader.py
+PyRINEX.egg-info/PKG-INFO
+PyRINEX.egg-info/SOURCES.txt
+PyRINEX.egg-info/dependency_links.txt
+PyRINEX.egg-info/requires.txt
+PyRINEX.egg-info/top_level.txt
