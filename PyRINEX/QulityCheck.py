@@ -841,10 +841,20 @@ def cycleslip(opath):
          epochs, cycleslips, 3, cloumn,y_label="cycle slip (m)")
     return cycleslips
 def QualityCheck(opath):
-    cyc = cycleslip(opath)
-    ionmp = ION_MP(opath)
-    aziele = azi_ele(opath)
-    SatelliteSignalPlot(opath)
+    if opath[-1] == "o":
+        napth = opath[:-1] + "n"
+    else:
+        napth = opath[:-1] + "N"
+    if os.path.exists(npath):
+        cyc = cycleslip(opath)
+        ionmp = ION_MP(opath)
+        aziele = azi_ele(opath)
+        SatelliteSignalPlot(opath)
+    else:
+        cyc = cycleslip(opath)
+        ionmp = ION_MP(opath)
+        aziele = azi_ele(opath)
+        SatelliteSignalPlot(opath)
 def batchQC(rootpath, keywords_list, extension):
     PINEXS = DataFinding(rootpath, keywords_list, extension)
     for RINEX in RINEXS:
