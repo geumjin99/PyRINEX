@@ -15,7 +15,9 @@ setup(
     install_requires=[
         'numpy==1.21.1',
         'matplotlib==3.4.1',
-        'chardet==4.0.0'
+        'chardet==4.0.0',
+        'panda ==1.21.1',
+        'seaborn==0.13.0'
     ],
     python_requires='>=3.6',
     license='Apache License 2.0'

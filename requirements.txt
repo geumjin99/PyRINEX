@@ -1,3 +1,5 @@
 numpy==1.21.1
 matplotlib==3.4.1
 chardet==4.0.0
+panda ==1.21.1
+seaborn==0.13.0
