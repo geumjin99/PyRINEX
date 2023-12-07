@@ -858,7 +858,7 @@ def QualityCheck(opath):
         ionmp = ION_MP(opath)
         SatelliteSignalPlot(opath)
 def batchQC(rootpath, keywords_list, extension):
-    PINEXS = DataFinding(rootpath, keywords_list, extension)
+    RINEXS = DataFinding(rootpath, keywords_list, extension)
     for RINEX in RINEXS:
         QualityCheck(RINEX)
 

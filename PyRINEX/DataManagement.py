@@ -76,13 +76,14 @@ def file_name_extesion_judgement_file(file_dir, extension_name):
                 file_list.append(file)
         return file_list
 def DataFinding(root_path, keywordslist, RINEXextension):
-    RINEXfiles = []
+    matching_paths = []
+
     for foldername, subfolders, filenames in os.walk(root_path):
-        for filename in filenames:
-            if all(keyword in filename for keyword in keywordslist) and filename.endswith(RINEXextension):
-                file_path = os.path.join(foldername, filename)
-                RINEXfiles.append(file_path)
-    return RINEXfiles
+        if all(keyword in foldername for keyword in keywordslist):
+            matching_file_paths = [os.path.join(foldername, filename) for filename in filenames if filename.lower().endswith(RINEXextension.lower())]
+            matching_paths.extend(matching_file_paths)
+
+    return matching_paths
 def generate_unique_filename(path):
     if not os.path.exists(path):
         return path
@@ -203,7 +204,6 @@ def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_
             status = os.path.exists(n_path[n])
             if status != False:
                 nlines = readtxt(n_path[n])
-                print(n_path[n])
                 with open(n_new_path, "w", encoding="utf-8") as fb:
                     for n2 in range(len(nlines)):
                         fb.write(nlines[n2])
