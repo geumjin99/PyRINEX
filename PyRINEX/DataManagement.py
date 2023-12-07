@@ -3,7 +3,7 @@ import codecs
 import os
 import chardet
 import csv
-from reader import *
+from PyRINEX.reader import *
 import numpy as np
 
 

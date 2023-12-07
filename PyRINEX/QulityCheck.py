@@ -1,6 +1,6 @@
 import json
-from reader import *
-from DataManagement import *
+from PyRINEX.reader import *
+from PyRINEX.DataManagement import *
 import numpy as np
 import math
 from numpy import *
