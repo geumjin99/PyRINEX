@@ -765,10 +765,10 @@ def ION_MP(opath):
     gps_prn = prns[1:]
     name = os.path.basename(opath)
     cloumn = math.ceil(len(prns)/18)
-    plot(opath[:-4] + "MP1_plot.png", name[:-4] + " MP1 plot", gps_prn, epochs, MP1MP2, 0,cloumn)
-    plot(opath[:-4] + "MP2_plot.png", name[:-4] + " MP2 plot", gps_prn, epochs, MP1MP2, 1,cloumn)
-    plot(opath[:-4] + "ION_plot.png", name[:-4] + " ION plot", gps_prn, epochs, MP1MP2, 2,cloumn)
-    plot(opath[:-4] + "IOD_plot.png", name[:-4] + " IOD plot", gps_prn, epochs, MP1MP2, 3,cloumn)
+    plot(opath[:-4] + "MP1_plot.png", name[:-4] + " MP1 plot", gps_prn, epochs, MP1MP2, 0, cloumn, y_label="MP1 (m)")
+    plot(opath[:-4] + "MP2_plot.png", name[:-4] + " MP2 plot", gps_prn, epochs, MP1MP2, 1, cloumn, y_label="MP2 (m)")
+    plot(opath[:-4] + "ION_plot.png", name[:-4] + " ION plot", gps_prn, epochs, MP1MP2, 2, cloumn, y_label="ION (m)")
+    plot(opath[:-4] + "IOD_plot.png", name[:-4] + " IOD plot", gps_prn, epochs, MP1MP2, 3, cloumn, y_label="IOD (m)")
     return MP1MP2
 def cycleslip(opath):
     odata = json.loads(observations(opath))
@@ -837,7 +837,8 @@ def cycleslip(opath):
         writer.writerows(row1)
     gps_prn = prns[1:]
     cloumn = math.ceil(len(prns) / 18)
-    plot(opath[:-4] + "CycleSlipCarrier.png", name[:-4] + " Cycle Slip of Carrier-Phase observations plot", gps_prn, epochs, cycleslips, 3, cloumn)
+    plot(opath[:-4] + "CycleSlipCarrier.png", name[:-4] + " Cycle Slip of Carrier-Phase observations plot", gps_prn,
+         epochs, cycleslips, 3, cloumn,y_label="cycle slip (m)")
     return cycleslips
 def QualityCheck(opath):
     cyc = cycleslip(opath)
