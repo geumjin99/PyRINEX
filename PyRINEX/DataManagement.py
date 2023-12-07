@@ -107,7 +107,7 @@ def date2doy(year, month, day):
     doy += day
     return doy
 def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_root):
-    fieldnames = ["origin path", "version", "station", "non English", "origin marker", "origin rec", "origin ant",
+    fieldnames = ["origin path", "version", "non English", "origin marker", "origin rec", "origin ant",
                   "new path", "marker", "longitude", "latitude", "rec type", "ant type"]
     row = []
     ReceiverLibrary = {}
@@ -127,16 +127,15 @@ def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_
             n_path.append(o_path[n][:-1]+"n")
         else:
             n_path.append(o_path[n][:-1]+"N")
+
     for n in range(len(o_path)):
         try:
             csv_contents = {}
             path = o_path[n]
-            print(path, n)
             lines = readtxt(path)
             header = json.loads(oheader(path))
             name = os.path.basename(path)
             csv_contents["version"] = header["version"]
-            nlines = readtxt(n_path[n])
             firsttime = header["TIME OF FIRST OBS"][0].replace("-", " ")
             try:
                 doy = date2doy(int(firsttime.split()[0]), int(firsttime.split()[1]), int(firsttime.split()[2]))
@@ -148,7 +147,7 @@ def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_
             except TypeError:
                 csv_contents["origin marker"] = "x"
             new_marker = header["MARKER_NAME"][1][0:4]
-            if " " in new_marker:    
+            if " " in new_marker:
                 new_marker.replace(" ", "a")
             if len(new_marker) != 4:
                 while len(new_marker) < 4:
@@ -166,7 +165,7 @@ def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_
                 neirong = list(lines[m])
                 result = [i for i in neirong if not re.findall("[^\u0000-\u05C0\u2100-\u214F]+", i)]
                 if len(result) != len(neirong):
-                    csv_contents["non English"] = "yes"
+                    csv_contents["non English"] = "Non-English characters present"
                     for k in range(len(neirong)):
                         if neirong[k] not in result:
                             neirong[k] = "-"
@@ -191,17 +190,22 @@ def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_
             newfolder = newfolder_root + "\\" + path[-3:-1] + str(doy)
             os.makedirs(newfolder, exist_ok=True)
             o_new_path = newfolder_root + "\\" + path[-3:-1] + str(doy) + "\\" + "".join([new_marker, str(doy), "0.", path[-3:]])
-            o_new_path =generate_unique_filename(o_new_path)
+            o_new_path = generate_unique_filename(o_new_path)
+            if o_new_path[-1] == "o":
+                n_new_path = o_new_path[:-1] + "n"
+            else:
+                n_new_path = o_new_path[:-1] + "N"
             csv_contents["new path"] = o_new_path
             with open(o_new_path, "w", encoding="utf-8") as fb:
-                for n in range(len(lines)):
-                    fb.write(lines[n])
-            with open(o_new_path.replace(o_new_path[-1], "n"),  "w", encoding="utf-8") as fb:
-                for n in range(len(nlines)):
-                    fb.write(nlines[n])
-        except FileNotFoundError:
-            csv_contents["origin path"] = path
-            csv_contents["new path"] = "FileNotFoundError"
+                for n1 in range(len(lines)):
+                    fb.write(lines[n1])
+            status = os.path.exists(n_path[n])
+            if status != False:
+                nlines = readtxt(n_path[n])
+                print(n_path[n])
+                with open(n_new_path, "w", encoding="utf-8") as fb:
+                    for n2 in range(len(nlines)):
+                        fb.write(nlines[n2])
         except UnicodeDecodeError:
             csv_contents["origin path"] = path
             csv_contents["new path"] = "UnicodeDecodeError"

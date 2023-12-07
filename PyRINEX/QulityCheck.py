@@ -13,7 +13,7 @@ from datetime import datetime
 import multiprocessing
 import threading
 import concurrent.futures
-
+import seaborn as sns
 def xyz2BLH(x, y, z, rad=True):#output is lon lat. This function is from https://zhuanlan.zhihu.com/p/358210424
     a = 6378137.0000
     b = 6356752.3141
@@ -109,36 +109,43 @@ def time_serises(odata):
     for k,v in obss.items():
         list.append(k)
     return list
-def plot(filename, title, gpsserises, epochs, dataset, type, column):
-    TIME = []
-    for m in range(len(epochs)):
-        TIME.append(":".join(epochs[m].split()[3:6]))
+def plot(filename, title, gpsserises, epochs, dataset, type, column, limit=100, y_label=None):
+    TIME = [epoch.split()[2] + " " + ":".join(epoch.split()[3:6]) for epoch in epochs]
+    hours = mdates.DateFormatter('%d %H:%M')
+    time = [parser.parse(x) for x in TIME]
+
     ax = plt.subplot()
     hours = mdates.DateFormatter('%H:%M')
     ax.xaxis.set_major_formatter(hours)
     ax.set_title(title)
-    time = [parser.parse(x) for x in TIME]
+
     element = {}
     gps_prn = gpsserises
     number_of_plots = len(gps_prn)
-    colormap = plt.cm.nipy_spectral
-    colors = [colormap(i) for i in np.linspace(0, 1, number_of_plots)]
+
+    # 使用seaborn中的颜色调色板
+    colors = sns.color_palette("viridis", number_of_plots)
     ax.set_prop_cycle('color', colors)
+
     for n in range(len(gps_prn)):
         element[gps_prn[n]] = []
+
     for n in range(len(dataset)):
         for m in range(len(gps_prn)):
-            if dataset[n][m][type] != 0 and abs(dataset[n][m][type]) < 100:
+            if dataset[n][m][type] != 0 and abs(dataset[n][m][type]) < limit:
                 element[gps_prn[m]].append([time[n], dataset[n][m][type]])
+
     for n in range(len(gps_prn)):
         data = element[gps_prn[n]]
-        x = []
-        y = []
-        for m in range(len(data)):
-            x.append(data[m][0])
-            y.append(data[m][1])
+        x = [entry[0] for entry in data]
+        y = [entry[1] for entry in data]
         ax.scatter(x, y, s=1, label=gps_prn[n])
+
     plt.legend(bbox_to_anchor=(1.05, 0), loc=3, borderaxespad=0, ncol=column)
+
+    if y_label:
+        ax.set_ylabel(y_label)
+
     plt.savefig(filename, dpi=360, bbox_inches='tight')
     plt.cla()
 def gps_pos(opath):
@@ -297,26 +304,71 @@ def azi_ele(opath):
                     azi = azi + 2 * math.pi
             dic[gps[j]] = [(azi), (ele)]
         azi_ele_list.append(dic)
+#    ax = plt.subplot(111, polar=True)
+#    ax.set_theta_direction(-1)
+#    ax.set_theta_zero_location('N')
+#    ax.set_rlim(90, 0)
+#    ax.set_title(os.path.basename(opath)[:-4]+"SkyPlot")
+#    element = {}
+#    gpss = []
+#    for n in range(len(prns)):
+#        if "G" in prns[n]:
+#            gpss.append(prns[n])
+#    colormap = plt.cm.nipy_spectral
+#    colors = [colormap(i) for i in np.linspace(0, 1, len(gpss))]
+#    ax.set_prop_cycle('color', colors)
+#    for n in range(len(gpss)):
+#        element[gpss[n]] = []
+#    for n in range(len(azi_ele_list)):
+#        for k, v in azi_ele_list[n].items():
+#            for keys, values in element.items():
+#                if k == keys:
+#                    element[keys].append(azi_ele_list[n][k])
+#    for n in range(len(gpss)):
+#        data = element[gpss[n]]
+#        rho = []
+#        theta = []
+#        for m in range(len(data)):
+#            rho.append(data[m][0])
+#            theta.append(math.degrees(data[m][1]))
+#        ax.scatter(rho, theta, s=10, label=gpss[n])
+##
+#    plt.legend(bbox_to_anchor=(0, 1.05), borderaxespad=3)
+#    plt.savefig(opath[:-4]+"skyplot.jpg", dpi=360, bbox_inches='tight')
+#    plt.cla()
+#    plt.clf()
+#    fieldnames = gpss
+#    fieldnames.insert(0, "epoch")
+#    row = []
+#    for n in range(len(azi_ele_list)):
+#        element = {}
+#        element["epoch"] = azi_ele_list[n]["epoch"]
+#        for k, v in azi_ele_list[n].items():
+#            element[k] = azi_ele_list[n][k]
+#        row.append(element)
     ax = plt.subplot(111, polar=True)
     ax.set_theta_direction(-1)
     ax.set_theta_zero_location('N')
     ax.set_rlim(90, 0)
-    ax.set_title(os.path.basename(opath)[:-4]+"SkyPlot")
+    ax.set_title(os.path.basename(opath)[:-4] + "SkyPlot")
+
     element = {}
-    gpss = []
-    for n in range(len(prns)):
-        if "G" in prns[n]:
-            gpss.append(prns[n])
-    colormap = plt.cm.nipy_spectral
+    gpss = [prn for prn in prns if "G" in prn]
+
+    # 使用 'viridis' 调色板，避免红色和绿色
+    colormap = plt.cm.viridis
     colors = [colormap(i) for i in np.linspace(0, 1, len(gpss))]
     ax.set_prop_cycle('color', colors)
+
     for n in range(len(gpss)):
         element[gpss[n]] = []
+
     for n in range(len(azi_ele_list)):
         for k, v in azi_ele_list[n].items():
             for keys, values in element.items():
                 if k == keys:
                     element[keys].append(azi_ele_list[n][k])
+
     for n in range(len(gpss)):
         data = element[gpss[n]]
         rho = []
@@ -327,15 +379,16 @@ def azi_ele(opath):
         ax.scatter(rho, theta, s=10, label=gpss[n])
 
     plt.legend(bbox_to_anchor=(0, 1.05), borderaxespad=3)
-    plt.savefig(opath[:-4]+"skyplot.jpg", dpi=360, bbox_inches='tight')
+    plt.savefig(opath[:-4] + "skyplot.png", dpi=360, bbox_inches='tight')
     plt.cla()
     plt.clf()
+
+    # 将数据保存到CSV文件
     fieldnames = gpss
     fieldnames.insert(0, "epoch")
     row = []
     for n in range(len(azi_ele_list)):
-        element = {}
-        element["epoch"] = azi_ele_list[n]["epoch"]
+        element = {"epoch": azi_ele_list[n]["epoch"]}
         for k, v in azi_ele_list[n].items():
             element[k] = azi_ele_list[n][k]
         row.append(element)
@@ -712,10 +765,10 @@ def ION_MP(opath):
     gps_prn = prns[1:]
     name = os.path.basename(opath)
     cloumn = math.ceil(len(prns)/18)
-    plot(opath[:-4] + "MP1_plot.jpg", name[:-4] + " MP1 plot", gps_prn, epochs, MP1MP2, 0,cloumn)
-    plot(opath[:-4] + "MP2_plot.jpg", name[:-4] + " MP2 plot", gps_prn, epochs, MP1MP2, 1,cloumn)
-    plot(opath[:-4] + "ION_plot.jpg", name[:-4] + " ION plot", gps_prn, epochs, MP1MP2, 2,cloumn)
-    plot(opath[:-4] + "IOD_plot.jpg", name[:-4] + " IOD plot", gps_prn, epochs, MP1MP2, 3,cloumn)
+    plot(opath[:-4] + "MP1_plot.png", name[:-4] + " MP1 plot", gps_prn, epochs, MP1MP2, 0,cloumn)
+    plot(opath[:-4] + "MP2_plot.png", name[:-4] + " MP2 plot", gps_prn, epochs, MP1MP2, 1,cloumn)
+    plot(opath[:-4] + "ION_plot.png", name[:-4] + " ION plot", gps_prn, epochs, MP1MP2, 2,cloumn)
+    plot(opath[:-4] + "IOD_plot.png", name[:-4] + " IOD plot", gps_prn, epochs, MP1MP2, 3,cloumn)
     return MP1MP2
 def cycleslip(opath):
     odata = json.loads(observations(opath))
@@ -778,13 +831,13 @@ def cycleslip(opath):
             if cycleslips[n][m][2] != 0.0 and cycleslips[n][m][3] != 0.0:
                 element1[prns[m+1]] = cycleslips[n][m][3]
         row1.append(element1)
-    with open(opath[:-4]+"CScodeCScarrier.csv", "w", encoding="utf-8", newline="") as f:
+    with open(opath[:-4]+"CScarrier.csv", "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(row1)
     gps_prn = prns[1:]
     cloumn = math.ceil(len(prns) / 18)
-    plot(opath[:-4] + "CycleSlipCarrier.jpg", name[:-4] + " Cycle Slip of Carrier-Phase observations plot", gps_prn, epochs, cycleslips, 3, cloumn)
+    plot(opath[:-4] + "CycleSlipCarrier.png", name[:-4] + " Cycle Slip of Carrier-Phase observations plot", gps_prn, epochs, cycleslips, 3, cloumn)
     return cycleslips
 def QualityCheck(opath):
     cyc = cycleslip(opath)
