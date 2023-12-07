@@ -841,10 +841,13 @@ def cycleslip(opath):
          epochs, cycleslips, 3, cloumn,y_label="cycle slip (m)")
     return cycleslips
 def QualityCheck(opath):
-    if opath[-1] == "o":
-        napth = opath[:-1] + "n"
-    else:
-        napth = opath[:-1] + "N"
+    # 获取文件后缀名
+    _, ext = os.path.splitext(opath)
+
+    # 构造npath
+    npath = opath[:-1] + ('n' if ext[-1].lower() == 'o' else 'N') + ext[1:]
+
+    # 检查npath是否存在
     if os.path.exists(npath):
         cyc = cycleslip(opath)
         ionmp = ION_MP(opath)
@@ -853,7 +856,6 @@ def QualityCheck(opath):
     else:
         cyc = cycleslip(opath)
         ionmp = ION_MP(opath)
-        aziele = azi_ele(opath)
         SatelliteSignalPlot(opath)
 def batchQC(rootpath, keywords_list, extension):
     PINEXS = DataFinding(rootpath, keywords_list, extension)
