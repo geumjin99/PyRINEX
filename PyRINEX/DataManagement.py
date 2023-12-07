@@ -106,7 +106,7 @@ def date2doy(year, month, day):
             doy += month_notleap[i]
     doy += day
     return doy
-def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_root):
+def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_root, radome = False):
     fieldnames = ["origin path", "version", "non English", "origin marker", "origin rec", "origin ant",
                   "new path", "marker", "longitude", "latitude", "rec type", "ant type"]
     row = []
@@ -183,9 +183,10 @@ def DataCleaning(RINEX_FILES,ReceiverLibraryPath, AntennaLibraryPath, newfolder_
             csv_contents["ant type"] = lines[header["antenna_type"][0]][20:40]
             ant_rad = header["antenna_type"][1][36:40]
             csv_contents["origin ant"] = lines[header["antenna_type"][0]][20:40]
-            if len(ant_rad) == 0:
-                lines[header["antenna_type"][0]] = "".join(
-                    [lines[header["antenna_type"][0]][:36], "NONE", lines[header["antenna_type"][0]][40:]])
+            if radome == True:
+                if len(ant_rad) == 0:
+                    lines[header["antenna_type"][0]] = "".join(
+                        [lines[header["antenna_type"][0]][:36], "NONE", lines[header["antenna_type"][0]][40:]])
             csv_contents["ant type"] = lines[header["antenna_type"][0]][20:40]
             newfolder = newfolder_root + "\\" + path[-3:-1] + str(doy)
             os.makedirs(newfolder, exist_ok=True)
