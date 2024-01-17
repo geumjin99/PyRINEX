@@ -5,3 +5,4 @@ This is a new Python package named PyRINEX, which is developed to batch process 
 
 Read manuel for details on how to use it.
 
+A detailed introductory paper on PyRINEX can be found at PyRINEX: a new multi-purpose Python package for GNSS RINEX data (https://peerj.com/articles/cs-1800/). If you wish to use the package in your research please cite the above paper.
