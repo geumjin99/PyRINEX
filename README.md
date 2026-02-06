@@ -41,17 +41,17 @@ QualityCheck('example.24o')
 
 If you use PyRINEX in your research, please cite:
 
-> Han J, Kim T, Song J, Kim S, Oh K. **PyRINEX: a new multi-purpose Python package for GNSS RINEX data.** *PeerJ Computer Science* 10:e1800. 2024. https://doi.org/10.7717/peerj-cs.1800
+> Han J, Lee SJ, Yun HS, Kim KB, Bae SW. **PyRINEX: a new multi-purpose Python package for GNSS RINEX data.** *PeerJ Computer Science* 10:e1800. 2024. https://doi.org/10.7717/peerj-cs.1800
 
 ```bibtex
 @article{han2024pyrinex,
   title={PyRINEX: a new multi-purpose Python package for GNSS RINEX data},
-  author={Han, Jinzhen and Kim, Taehee and Song, Jungho and Kim, Sanghoon and Oh, Keunyeong},
+  author={Han, Jinzhen and Lee, Seung Jun and Yun, Hong Sik and Kim, Kwang Bae and Bae, Sang Won},
   journal={PeerJ Computer Science},
   volume={10},
   pages={e1800},
   year={2024},
-  doi={10.7717/peerj-cs.1800}
+  publisher={PeerJ Inc.}
 }
 ```
 
