@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyRINEX"
+version = "4.0.0"
+description = "Python toolkit for batch processing and quality-checking RINEX 2/3 GNSS files."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+authors = [
+    { name = "Han Jinzhen", email = "hanjinzhen9@gmail.com" },
+]
+keywords = ["GNSS", "RINEX", "GPS", "geodesy", "quality check"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+dependencies = [
+    "numpy>=1.20",
+    "matplotlib>=3.4",
+    "seaborn>=0.11",
+    "chardet>=4.0",
+    "python-dateutil>=2.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/geumjin99/PyRINEX"
+Repository = "https://github.com/geumjin99/PyRINEX"
+Issues = "https://github.com/geumjin99/PyRINEX/issues"
+Documentation = "https://github.com/geumjin99/PyRINEX/blob/main/docs/manual.tex"
+Citation = "https://doi.org/10.7717/peerj-cs.1800"
+
+[tool.setuptools.packages.find]
+include = ["PyRINEX*"]
+exclude = ["tests*", "docs*"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning:PyRINEX",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"PyRINEX/QulityCheck.py" = ["F401", "E402"]
+"PyRINEX/DataManagement.py" = ["F401", "E402"]

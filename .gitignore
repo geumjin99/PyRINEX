@@ -1,0 +1,51 @@
+# Build / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# Bytecode / caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# LaTeX build products
+docs/*.aux
+docs/*.bbl
+docs/*.blg
+docs/*.fdb_latexmk
+docs/*.fls
+docs/*.log
+docs/*.out
+docs/*.synctex.gz
+docs/*.toc
+docs/manual.pdf
+
+# Test outputs from RINEX runs
+*SignalPlot.jpg
+*SignalPlot.png
+*skyplot.png
+*aziele.csv
+*MP1_plot.png
+*MP2_plot.png
+*ION_plot.png
+*IOD_plot.png
+*mp1mp2.csv
+*IonIod.csv
+*CScarrier.csv
+*CycleSlipCarrier.png
