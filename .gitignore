@@ -24,17 +24,6 @@ env/
 .DS_Store
 *.swp
 
-# LaTeX build products
-docs/*.aux
-docs/*.bbl
-docs/*.blg
-docs/*.fdb_latexmk
-docs/*.fls
-docs/*.log
-docs/*.out
-docs/*.synctex.gz
-docs/*.toc
-
 # Test outputs from RINEX runs
 *SignalPlot.jpg
 *SignalPlot.png

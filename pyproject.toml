@@ -44,7 +44,7 @@ dev = [
 Homepage = "https://github.com/geumjin99/PyRINEX"
 Repository = "https://github.com/geumjin99/PyRINEX"
 Issues = "https://github.com/geumjin99/PyRINEX/issues"
-Documentation = "https://github.com/geumjin99/PyRINEX/blob/main/docs/manual.tex"
+Documentation = "https://github.com/geumjin99/PyRINEX/blob/main/docs/manual.pdf"
 Citation = "https://doi.org/10.7717/peerj-cs.1800"
 
 [tool.setuptools.packages.find]

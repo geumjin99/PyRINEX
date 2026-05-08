@@ -1,8 +1,12 @@
 # PyRINEX
 
 [![DOI](https://zenodo.org/badge/718226106.svg)](https://zenodo.org/doi/10.5281/zenodo.10140408)
+[![Paper DOI](https://img.shields.io/badge/PeerJ%20CS-10.7717%2Fpeerj--cs.1800-blue)](https://doi.org/10.7717/peerj-cs.1800)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
+
+**Software DOI:** [10.5281/zenodo.10140408](https://doi.org/10.5281/zenodo.10140408) ·
+**Paper DOI:** [10.7717/peerj-cs.1800](https://doi.org/10.7717/peerj-cs.1800)
 
 A Python package for batch processing RINEX 2/3 GNSS files with quality-check
 products (multipath, ionospheric drift, cycle slips, sky plot, signal plot).
@@ -37,12 +41,7 @@ print(header.MARKER_NAME, header.APPROX_POSITION_XYZ)
 quality_check.quality_check("test0010.24o")
 ```
 
-The full API is documented in [`docs/manual.tex`](docs/manual.tex). To build the PDF:
-
-```bash
-cd docs
-pdflatex manual.tex && bibtex manual && pdflatex manual.tex && pdflatex manual.tex
-```
+The full API is documented in [`docs/manual.pdf`](docs/manual.pdf).
 
 ## Migrating from 3.x
 
