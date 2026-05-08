@@ -34,7 +34,6 @@ docs/*.log
 docs/*.out
 docs/*.synctex.gz
 docs/*.toc
-docs/manual.pdf
 
 # Test outputs from RINEX runs
 *SignalPlot.jpg
